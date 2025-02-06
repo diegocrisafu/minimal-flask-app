@@ -6,70 +6,48 @@ from dotenv import load_dotenv
 load_dotenv()  # Load environment variables from .env
 
 app = Flask(__name__)
-openai.api_key = os.getenv("OPENAI_API_KEY")  # Securely load API key
+openai.api_key = os.getenv("OPENAI_API_KEY")  # Securely load your OpenAI API key
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    interpretation = None
+    result = None
     image_url = None
 
     if request.method == "POST":
-        # Get dream description from the user
-        dream_text = request.form.get("dream_text", "")
+        prompt = request.form.get("prompt", "")
 
         try:
-            # --- GPT: Jungian Interpretation ---
-            # We construct messages for ChatCompletion. 
-            # System role sets the overall behavior & context. 
-            # User role is the dream text input.
-            messages = [
-                {
-                    "role": "system",
-                    "content": (
-                        "You are a psychoanalyst well-versed in Carl Jung’s theories. "
-                        "You provide dream interpretations that explore archetypes, the collective unconscious, "
-                        "and symbolic meaning in a concise, thoughtful way. "
-                        "You are not a mental health professional and cannot give medical advice. "
-                        "Always remind the user that this is an interpretation, not a diagnosis."
-                    )
-                },
-                {
-                    "role": "user",
-                    "content": f"Dream description: {dream_text}"
-                },
-            ]
-
-            # Create a chat completion for the dream interpretation
-            response = openai.ChatCompletion.create(
+            # --- Chat Completion (GPT) ---
+            # Note the new method path: openai.chat.completions.create
+            chat_response = openai.chat.completions.create(
                 model="gpt-3.5-turbo",  # or "gpt-4" if you have access
-                messages=messages,
-                temperature=0.9
+                messages=[
+                    {"role": "system", "content": 
+                     "You are a thorough assistant. Provide short, thoughtful answers."},
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=1.0,
+                max_tokens=50
             )
-            interpretation = response.choices[0].message.content.strip()
+            # Extract the text from the response
+            result = chat_response.choices[0].message.content.strip()
 
-            # --- DALL·E: Image Generation ---
-            # Use the dream text and the resulting interpretation
-            # to guide the image prompt. Keep it succinct but descriptive.
-            image_prompt = (
-                f"Create a surreal, dream-like scene inspired by the following dream:\n"
-                f"\"{dream_text}\"\n"
-                f"and this Jungian interpretation:\n"
-                f"\"{interpretation}\"\n"
-                f"Focus on archetypal symbols and a mystical, introspective atmosphere."
-            )
+            # --- Image Generation (DALL·E) ---
+            # Use openai.images.create instead of openai.Image.create
+            image_prompt = f"A hyperrealistic photograph inspired by: '{prompt}' and the response: '{result}'."
 
-            image_response = openai.Image.create(
+            image_response = openai.images.create(
                 prompt=image_prompt,
                 n=1,
                 size="512x512"
             )
-            image_url = image_response["data"][0]["url"]
+            image_url = image_response.data[0].url
 
         except Exception as e:
-            interpretation = f"Error: {str(e)}"
+            result = f"Error: {str(e)}"
 
-    return render_template("index.html", interpretation=interpretation, image_url=image_url)
-
+    return render_template("index.html", result=result, image_url=image_url)
 
 if __name__ == "__main__":
+    # Debug=True is great for local testing but turn off in production
     app.run(debug=True)

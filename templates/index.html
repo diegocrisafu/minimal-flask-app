@@ -2,101 +2,77 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Jungian Dream Interpreter</title>
+    <title>Chat + DALL·E Example</title>
     <style>
         body {
-            background: #f5f5f5;
             font-family: Arial, sans-serif;
-            margin: 0;
+            background: #f0f0f0;
+            margin: 0; 
             padding: 0;
         }
         .container {
             max-width: 640px;
             margin: 50px auto;
             padding: 20px;
-            background: white;
+            background: #fff;
             border-radius: 8px;
         }
         h1 {
             text-align: center;
-            margin-bottom: 2rem;
         }
         form {
             display: flex;
             flex-direction: column;
+            margin-bottom: 1rem;
         }
-        textarea {
-            resize: vertical;
-            min-height: 120px;
+        input[type="text"] {
             margin-bottom: 1rem;
             padding: 0.5rem;
             font-size: 1rem;
         }
         input[type="submit"] {
             padding: 0.75rem;
-            font-size: 1rem;
-            background: #4CAF50;
-            color: white;
             border: none;
             border-radius: 4px;
+            background: #2196f3;
+            color: #fff;
+            font-size: 1rem;
             cursor: pointer;
         }
-        input[type="submit"]:hover {
-            background: #45a049;
+        .result, .image-container {
+            margin-top: 1rem;
         }
-        .result-section {
-            margin-top: 2rem;
-        }
-        .interpretation {
-            margin-bottom: 2rem;
-            padding: 1rem;
-            background: #fafafa;
-            border: 1px solid #eee;
-            border-radius: 4px;
-            white-space: pre-wrap;
-        }
-        .dream-image {
-            display: block;
+        .image-container img {
             max-width: 100%;
-            margin: 0 auto;
-            border: 1px solid #eee;
+            border-radius: 4px;
+            border: 1px solid #ccc;
         }
-        footer {
-            text-align: center;
-            margin-top: 3rem;
-            color: #999;
+        .error {
+            color: red;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Jungian Dream Interpreter</h1>
-        <p>Enter a description of your dream below. Our system will attempt to provide a Jungian interpretation using archetypes and symbolism, and generate a corresponding image using DALL·E.</p>
-        
+        <h1>Chat + DALL·E Demo</h1>
         <form method="POST">
-            <label for="dream_text">Describe your dream:</label>
-            <textarea name="dream_text" id="dream_text" required></textarea>
-            <input type="submit" value="Interpret my Dream">
+            <input type="text" name="prompt" placeholder="Enter a dream or topic..." required>
+            <input type="submit" value="Submit">
         </form>
 
-        {% if interpretation or image_url %}
-            <div class="result-section">
-                {% if interpretation %}
-                <div class="interpretation">
-                    <h3>Interpretation:</h3>
-                    <p>{{ interpretation }}</p>
-                </div>
-                {% endif %}
+        {% if result %}
+            <div class="result">
+                <h2>Response:</h2>
+                <p>{{ result }}</p>
+            </div>
+        {% endif %}
 
-                {% if image_url %}
-                <img class="dream-image" src="{{ image_url }}" alt="Generated Dream Image">
-                {% endif %}
+        {% if image_url %}
+            <div class="image-container">
+                <h2>Generated Image:</h2>
+                <img src="{{ image_url }}" alt="Generated image">
             </div>
         {% endif %}
     </div>
-
-    <footer>
-        <p>Note: This is a creative Jungian-inspired interpretation, not professional mental health advice.</p>
-    </footer>
 </body>
 </html>
