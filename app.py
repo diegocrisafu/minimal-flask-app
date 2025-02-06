@@ -10,39 +10,66 @@ openai.api_key = os.getenv("OPENAI_API_KEY")  # Securely load API key
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    result = None
+    interpretation = None
     image_url = None
-    if request.method == "POST":
-        prompt = request.form["prompt"]
-        try:
-            # Generate text response using GPT-4o-mini
-            response = openai.chat.completions.create(
-                model="gpt-4o-mini",  
-                messages=[
-                    {"role": "developer", "content": "You are a thorough assistant. Your responses are short and smart. Avoid predictable phrasing."}, 
-                    {"role": "user", "content": prompt}
-                ],
-                temperature=1.2,
-                max_completion_tokens=50
-            )
-            result = response.choices[0].message.content
 
-            # Combine the question and response for image prompt
-            image_prompt = f"Create a hyperrealistic photography inspired by the question: '{prompt}' and the response: '{result}'."
-            
-            # Generate image using DALL·E (OpenAI Image API)
-            image_response = openai.OpenAI().images.generate(
-                model="dall-e-2",
-                prompt=image_prompt,
-                size="512x512",
-                quality="standard",
-                n=1,
+    if request.method == "POST":
+        # Get dream description from the user
+        dream_text = request.form.get("dream_text", "")
+
+        try:
+            # --- GPT: Jungian Interpretation ---
+            # We construct messages for ChatCompletion. 
+            # System role sets the overall behavior & context. 
+            # User role is the dream text input.
+            messages = [
+                {
+                    "role": "system",
+                    "content": (
+                        "You are a psychoanalyst well-versed in Carl Jung’s theories. "
+                        "You provide dream interpretations that explore archetypes, the collective unconscious, "
+                        "and symbolic meaning in a concise, thoughtful way. "
+                        "You are not a mental health professional and cannot give medical advice. "
+                        "Always remind the user that this is an interpretation, not a diagnosis."
+                    )
+                },
+                {
+                    "role": "user",
+                    "content": f"Dream description: {dream_text}"
+                },
+            ]
+
+            # Create a chat completion for the dream interpretation
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",  # or "gpt-4" if you have access
+                messages=messages,
+                temperature=0.9
             )
-            image_url = image_response.data[0].url
-            print (image_url)
+            interpretation = response.choices[0].message.content.strip()
+
+            # --- DALL·E: Image Generation ---
+            # Use the dream text and the resulting interpretation
+            # to guide the image prompt. Keep it succinct but descriptive.
+            image_prompt = (
+                f"Create a surreal, dream-like scene inspired by the following dream:\n"
+                f"\"{dream_text}\"\n"
+                f"and this Jungian interpretation:\n"
+                f"\"{interpretation}\"\n"
+                f"Focus on archetypal symbols and a mystical, introspective atmosphere."
+            )
+
+            image_response = openai.Image.create(
+                prompt=image_prompt,
+                n=1,
+                size="512x512"
+            )
+            image_url = image_response["data"][0]["url"]
+
         except Exception as e:
-            result = f"Error: {str(e)}"
-    return render_template("index.html", result=result, image_url=image_url)
+            interpretation = f"Error: {str(e)}"
+
+    return render_template("index.html", interpretation=interpretation, image_url=image_url)
+
 
 if __name__ == "__main__":
-    app.run(debug=True)  # Run locally for testing
+    app.run(debug=True)

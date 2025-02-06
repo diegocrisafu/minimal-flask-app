@@ -2,57 +2,101 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Psychedelic AI</title>
+    <title>Jungian Dream Interpreter</title>
     <style>
         body {
-            background-image: url("{{ image_url|safe }}");
-            background-size: cover;
-            background-position: center;
+            background: #f5f5f5;
             font-family: Arial, sans-serif;
-            color: #fff;
             margin: 0;
             padding: 0;
-            min-height: 100vh;
         }
-        .content {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 20px;
+        .container {
+            max-width: 640px;
             margin: 50px auto;
-            max-width: 600px;
+            padding: 20px;
+            background: white;
             border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
         }
         form {
             display: flex;
             flex-direction: column;
         }
-        input[type="text"] {
-            padding: 10px;
-            margin-bottom: 10px;
-            border: none;
-            border-radius: 4px;
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            font-size: 1rem;
         }
         input[type="submit"] {
-            padding: 10px;
+            padding: 0.75rem;
+            font-size: 1rem;
+            background: #4CAF50;
+            color: white;
             border: none;
             border-radius: 4px;
-            background: #2196f3;
-            color: white;
             cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background: #45a049;
+        }
+        .result-section {
+            margin-top: 2rem;
+        }
+        .interpretation {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            white-space: pre-wrap;
+        }
+        .dream-image {
+            display: block;
+            max-width: 100%;
+            margin: 0 auto;
+            border: 1px solid #eee;
+        }
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            color: #999;
         }
     </style>
 </head>
 <body>
-
-    <div class="content">
-        <h1>Psychedelic AI</h1>
-        <form method="post">
-            <input type="text" name="prompt" placeholder="Enter your question" required>
-            <input type="submit" value="Submit">
+    <div class="container">
+        <h1>Jungian Dream Interpreter</h1>
+        <p>Enter a description of your dream below. Our system will attempt to provide a Jungian interpretation using archetypes and symbolism, and generate a corresponding image using DALL·E.</p>
+        
+        <form method="POST">
+            <label for="dream_text">Describe your dream:</label>
+            <textarea name="dream_text" id="dream_text" required></textarea>
+            <input type="submit" value="Interpret my Dream">
         </form>
-        {% if result %}
-            <h2>Response:</h2>
-            <p>{{ result }}</p>
+
+        {% if interpretation or image_url %}
+            <div class="result-section">
+                {% if interpretation %}
+                <div class="interpretation">
+                    <h3>Interpretation:</h3>
+                    <p>{{ interpretation }}</p>
+                </div>
+                {% endif %}
+
+                {% if image_url %}
+                <img class="dream-image" src="{{ image_url }}" alt="Generated Dream Image">
+                {% endif %}
+            </div>
         {% endif %}
     </div>
+
+    <footer>
+        <p>Note: This is a creative Jungian-inspired interpretation, not professional mental health advice.</p>
+    </footer>
 </body>
 </html>
