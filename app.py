@@ -3,10 +3,10 @@ import openai
 import os
 from dotenv import load_dotenv
 
-load_dotenv()  # Load environment variables from .env
+load_dotenv()  # Loads environment variables from .env
 
 app = Flask(__name__)
-openai.api_key = os.getenv("OPENAI_API_KEY")  # Securely load your OpenAI API key
+openai.api_key = os.getenv("OPENAI_API_KEY")  # Ensure this is set in your .env
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -14,22 +14,19 @@ def index():
     image_url = None
 
     if request.method == "POST":
-        # Retrieve user input from the form
+        # Grab the user's dream text from the form
         dream_text = request.form.get("dream_text", "")
 
         try:
-            # --- 1) Chat Completion (GPT) ---
-            # Use openai.ChatCompletion.create(...) for chat-based interpretation.
-            chat_response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",   # or "gpt-4" if you have access
+            # 1) Jungian Dream Interpretation (via ChatCompletion)
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",  # Or "gpt-4" if your key has access
                 messages=[
                     {
                         "role": "system",
                         "content": (
-                            "You are a psychoanalyst well-versed in Carl Jung’s theories. "
-                            "You provide dream interpretations that explore archetypes, the collective unconscious, "
-                            "and symbolic meaning in a concise, thoughtful way. "
-                            "You are not a mental health professional and cannot give medical advice. "
+                            "You are a psychoanalyst well-versed in Carl Jung's theories. "
+                            "Provide a concise, symbolic interpretation of the dream. "
                             "Remind the user this is an interpretation, not a diagnosis."
                         )
                     },
@@ -41,18 +38,15 @@ def index():
                 temperature=0.9,
                 max_tokens=300
             )
+            interpretation = response.choices[0].message.content.strip()
 
-            interpretation = chat_response.choices[0].message.content.strip()
-
-            # --- 2) Image Generation (DALL·E) ---
-            # Switch from `openai.images.create(...)` to `openai.Image.create(...)`.
-            # "Images" vs "Image" is often the cause of the 'no attribute create' error.
+            # 2) DALL·E Image Generation (via openai.Image)
+            # Prompt uses both dream_text and the generated interpretation
             image_prompt = (
-                f"A surreal, dream-like scene inspired by the user's dream:\n"
-                f"\"{dream_text}\"\n"
-                f"And the following Jungian interpretation:\n"
-                f"\"{interpretation}\"\n"
-                f"Focus on symbolic archetypes and a mystical, introspective atmosphere."
+                f"A surreal and mystical scene inspired by the following dream:\n\n"
+                f"Dream: \"{dream_text}\"\n\n"
+                f"Interpretation: \"{interpretation}\"\n\n"
+                "Focus on Jungian archetypes, symbolism, and a contemplative mood."
             )
 
             image_response = openai.Image.create(
@@ -69,4 +63,5 @@ def index():
 
 
 if __name__ == "__main__":
+    # Debug=True is useful for local development but disable it in production
     app.run(debug=True)

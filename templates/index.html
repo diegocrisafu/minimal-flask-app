@@ -1,87 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Jungian Dream Interpreter</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 640px;
-            margin: 50px auto;
-            padding: 20px;
-            background: #fff;
-            border-radius: 8px;
-        }
-        h1 {
-            text-align: center;
-        }
-        form {
-            margin-bottom: 1rem;
-        }
-        textarea {
-            width: 100%;
-            min-height: 120px;
-            padding: 0.5rem;
-            margin-bottom: 1rem;
-            font-size: 1rem;
-        }
-        button {
-            padding: 0.75rem;
-            font-size: 1rem;
-            background: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .results {
-            margin-top: 2rem;
-        }
-        .interpretation, .dream-image {
-            background: #fafafa;
-            border: 1px solid #eee;
-            padding: 1rem;
-            border-radius: 4px;
-            margin-bottom: 1rem;
-        }
-        .dream-image img {
-            max-width: 100%;
-            display: block;
-            border-radius: 4px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Jungian Dream Interpreter</title>
+  <style>
+    /* RESET */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #333;
+      background: #f0f0f0;
+    }
+
+    header {
+      background: linear-gradient(135deg, #4F46E5, #9333EA);
+      color: #fff;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 1rem;
+    }
+    header h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    header p {
+      font-size: 1rem;
+      opacity: 0.85;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+    }
+
+    /* Form styling */
+    form {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    textarea {
+      font: inherit;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      min-height: 120px;
+      resize: vertical;
+      margin-bottom: 1rem;
+    }
+
+    button[type="submit"] {
+      align-self: flex-start;
+      background: #4F46E5; /* Or #9333EA */
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button[type="submit"]:hover {
+      background: #4338CA;
+    }
+
+    .results {
+      margin-top: 2rem;
+    }
+
+    .interpretation, .dream-image {
+      background: #FAFAFA;
+      border: 1px solid #EEE;
+      border-radius: 6px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .interpretation h2,
+    .dream-image h2 {
+      margin-bottom: 0.5rem;
+      font-size: 1.25rem;
+      color: #4F46E5;
+    }
+
+    .dream-image img {
+      max-width: 100%;
+      border-radius: 4px;
+      display: block;
+      margin-top: 1rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem 0;
+      font-size: 0.9rem;
+      color: #777;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Jungian Dream Interpreter</h1>
-        <form method="POST">
-            <label for="dream_text">Describe your dream:</label>
-            <textarea id="dream_text" name="dream_text" required></textarea>
-            <button type="submit">Interpret My Dream</button>
-        </form>
 
-        {% if interpretation or image_url %}
-        <div class="results">
-            {% if interpretation %}
-            <div class="interpretation">
-                <h2>Interpretation</h2>
-                <p>{{ interpretation }}</p>
-            </div>
-            {% endif %}
+  <header>
+    <h1>Jungian Dream Interpreter</h1>
+    <p>Explore the hidden symbols and archetypes of your dreams.</p>
+  </header>
 
-            {% if image_url %}
-            <div class="dream-image">
-                <h2>Generated Dream Image</h2>
-                <img src="{{ image_url }}" alt="Dream Image">
-            </div>
-            {% endif %}
-        </div>
+  <div class="container">
+    <form method="POST">
+      <label for="dream_text">Describe your dream in detail:</label>
+      <textarea id="dream_text" name="dream_text" placeholder="e.g., I was climbing a spiral staircase that led to a dragon..." required></textarea>
+      <button type="submit">Interpret My Dream</button>
+    </form>
+
+    {% if interpretation or image_url %}
+      <div class="results">
+        {% if interpretation %}
+          <div class="interpretation">
+            <h2>Interpretation</h2>
+            <p>{{ interpretation }}</p>
+          </div>
         {% endif %}
-    </div>
+        {% if image_url %}
+          <div class="dream-image">
+            <h2>Dream Visualized</h2>
+            <img src="{{ image_url }}" alt="Dream Image">
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+
+  <footer>
+    <p>&copy; {{ 2025 }} Jungian Dream Interpreter. Remember: this is not medical or mental health advice.</p>
+  </footer>
+
 </body>
 </html>
