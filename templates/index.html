@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Chat + DALL·E Example</title>
+    <title>Jungian Dream Interpreter</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: #f0f0f0;
-            margin: 0; 
+            background: #f5f5f5;
+            margin: 0;
             padding: 0;
         }
         .container {
@@ -21,57 +21,66 @@
             text-align: center;
         }
         form {
-            display: flex;
-            flex-direction: column;
             margin-bottom: 1rem;
         }
-        input[type="text"] {
-            margin-bottom: 1rem;
+        textarea {
+            width: 100%;
+            min-height: 120px;
             padding: 0.5rem;
+            margin-bottom: 1rem;
             font-size: 1rem;
         }
-        input[type="submit"] {
+        button {
             padding: 0.75rem;
+            font-size: 1rem;
+            background: #4CAF50;
+            color: white;
             border: none;
             border-radius: 4px;
-            background: #2196f3;
-            color: #fff;
-            font-size: 1rem;
             cursor: pointer;
         }
-        .result, .image-container {
-            margin-top: 1rem;
+        .results {
+            margin-top: 2rem;
         }
-        .image-container img {
-            max-width: 100%;
+        .interpretation, .dream-image {
+            background: #fafafa;
+            border: 1px solid #eee;
+            padding: 1rem;
             border-radius: 4px;
-            border: 1px solid #ccc;
+            margin-bottom: 1rem;
         }
-        .error {
-            color: red;
+        .dream-image img {
+            max-width: 100%;
+            display: block;
+            border-radius: 4px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Chat + DALL·E Demo</h1>
+        <h1>Jungian Dream Interpreter</h1>
         <form method="POST">
-            <input type="text" name="prompt" placeholder="Enter a dream or topic..." required>
-            <input type="submit" value="Submit">
+            <label for="dream_text">Describe your dream:</label>
+            <textarea id="dream_text" name="dream_text" required></textarea>
+            <button type="submit">Interpret My Dream</button>
         </form>
 
-        {% if result %}
-            <div class="result">
-                <h2>Response:</h2>
-                <p>{{ result }}</p>
+        {% if interpretation or image_url %}
+        <div class="results">
+            {% if interpretation %}
+            <div class="interpretation">
+                <h2>Interpretation</h2>
+                <p>{{ interpretation }}</p>
             </div>
-        {% endif %}
+            {% endif %}
 
-        {% if image_url %}
-            <div class="image-container">
-                <h2>Generated Image:</h2>
-                <img src="{{ image_url }}" alt="Generated image">
+            {% if image_url %}
+            <div class="dream-image">
+                <h2>Generated Dream Image</h2>
+                <img src="{{ image_url }}" alt="Dream Image">
             </div>
+            {% endif %}
+        </div>
         {% endif %}
     </div>
 </body>
