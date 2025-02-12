@@ -18,7 +18,7 @@ def index():
         dream_text = request.form.get("dream_text", "")
 
         try:
-            # 1) Jungian Dream Interpretation using the new chat completions endpoint:
+            # 1) Jungian Dream Interpretation using GPT-4
             chat_response = openai.chat.completions.create(
                 model="gpt-4",  
                 messages=[
@@ -40,25 +40,20 @@ def index():
             )
             interpretation = chat_response.choices[0].message.content.strip()
 
-            # 2) DALL·E Image Generation using the new images endpoint:
-            base_image_prompt = (
-                "Create a surreal, dream-like image that represents the literal elements of the dream. "
-                "Focus primarily on the scene described rather than excessive symbolic details. "
-                "For example, if the dream involves a person drowning and then waking up in bed, emphasize those elements clearly."
+            # 2) DALL·E Image Generation using the image prompt you like:
+            image_prompt = (
+                f"A surreal and mystical scene inspired by the following dream:\n\n"
+                f"Dream: \"{dream_text}\"\n\n"
+                f"Interpretation: \"{interpretation}\"\n\n"
+                "Focus on Jungian archetypes, symbolism, and a contemplative mood."
             )
-            middle_text = "\n\nDream: "
-            combined_text = dream_text.strip()  # Using just the user's dream for the image prompt
-            full_prompt = base_image_prompt + middle_text + combined_text
 
-            # Check prompt length (must be <= 1000 characters)
-            if len(full_prompt) > 1000:
-                # Truncate the combined text so that full_prompt fits within 1000 characters
-                allowed_chars = 1000 - len(base_image_prompt) - len(middle_text)
-                truncated_combined_text = combined_text[:allowed_chars - 3] + "..."
-                full_prompt = base_image_prompt + middle_text + truncated_combined_text
+            # Ensure the image prompt is within the 1000-character limit:
+            if len(image_prompt) > 1000:
+                image_prompt = image_prompt[:997] + "..."
 
             image_response = openai.images.generate(
-                prompt=full_prompt,
+                prompt=image_prompt,
                 n=1,
                 size="512x512"
             )
