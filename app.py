@@ -20,14 +20,15 @@ def index():
         try:
             # 1) Jungian Dream Interpretation using the new chat completions endpoint:
             chat_response = openai.chat.completions.create(
-                model="gpt-3.5-turbo",  # or "gpt-4" if you have access
+                model="gpt-4",  # or "gpt-4" if you have access
                 messages=[
                     {
                         "role": "system",
                         "content": (
-                            "You are a psychoanalyst well-versed in Carl Jung's theories. "
-                            "Provide a concise, symbolic interpretation of the dream. "
-                            "Remind the user this is an interpretation, not a diagnosis."
+                            "You are a Jungian psychoanalyst. Analyze the dream using core Jungian concepts such as the collective unconscious, "
+                            "archetypes (the Shadow, Anima/Animus, Self, and the ego), and the process of individuation. Explain how the dream symbols "
+                            "Emphasize symbolic imagery and the potential for growth, "
+                            "and remind the user that this is a creative interpretation, not a diagnosis."
                         )
                     },
                     {
@@ -42,10 +43,10 @@ def index():
 
             # 2) DALL·E Image Generation using the new images endpoint:
             image_prompt = (
-                f"A surreal and mystical scene inspired by the following dream:\n\n"
-                f"Dream: \"{dream_text}\"\n\n"
-                f"Interpretation: \"{interpretation}\"\n\n"
-                "Focus on Jungian archetypes, symbolism, and a contemplative mood."
+                f"Create a dream-like, surreal image that visually represents the inner journey of the dreamer. "
+                f"Incorporate symbolic elements such as dark, mysterious silhouettes (the Shadow), ethereal figures (Anima/Animus), "
+                f"and transformative motifs like labyrinths or mythic creatures to evoke the collective unconscious and the process of individuation. "
+                f"Blend elements of the dream:\n\n\"{dream_text}\"\n\nwith the following interpretation:\n\n\"{interpretation}\"."
             )
 
             image_response = openai.images.generate(
