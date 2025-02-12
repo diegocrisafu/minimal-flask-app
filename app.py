@@ -20,14 +20,14 @@ def index():
         try:
             # 1) Jungian Dream Interpretation using the new chat completions endpoint:
             chat_response = openai.chat.completions.create(
-                model="gpt-3.5-turbo",  # or "gpt-4" if you have access
+                model="gpt-4",  
                 messages=[
                     {
                         "role": "system",
                         "content": (
-                            "You are a psychoanalyst well-versed in Carl Jung's theories. "
-                            "Provide a concise, symbolic interpretation of the dream. "
-                            "Remind the user this is an interpretation, not a diagnosis."
+                            "You are a Jungian psychoanalyst. Analyze the dream using core Jungian concepts such as the collective unconscious, "
+                            "archetypes (the Shadow, Anima/Animus, Self, and the ego), and the process of individuation. Explain how the dream symbols "
+                            "connect to inner conflicts and potential for personal growth. Emphasize symbolic imagery and remind the user that this is a creative interpretation, not a diagnosis."
                         )
                     },
                     {
@@ -36,20 +36,29 @@ def index():
                     }
                 ],
                 temperature=0.9,
-                max_tokens=300
+                max_tokens=200
             )
             interpretation = chat_response.choices[0].message.content.strip()
 
             # 2) DALL·E Image Generation using the new images endpoint:
-            image_prompt = (
-                f"A surreal and mystical scene inspired by the following dream:\n\n"
-                f"Dream: \"{dream_text}\"\n\n"
-                f"Interpretation: \"{interpretation}\"\n\n"
-                "Focus on Jungian archetypes, symbolism, and a contemplative mood."
+            base_image_prompt = (
+                "Create a surreal, dream-like image that represents the literal elements of the dream. "
+                "Focus primarily on the scene described rather than excessive symbolic details. "
+                "For example, if the dream involves a person drowning and then waking up in bed, emphasize those elements clearly."
             )
+            middle_text = "\n\nDream: "
+            combined_text = dream_text.strip()  # Using just the user's dream for the image prompt
+            full_prompt = base_image_prompt + middle_text + combined_text
+
+            # Check prompt length (must be <= 1000 characters)
+            if len(full_prompt) > 1000:
+                # Truncate the combined text so that full_prompt fits within 1000 characters
+                allowed_chars = 1000 - len(base_image_prompt) - len(middle_text)
+                truncated_combined_text = combined_text[:allowed_chars - 3] + "..."
+                full_prompt = base_image_prompt + middle_text + truncated_combined_text
 
             image_response = openai.images.generate(
-                prompt=image_prompt,
+                prompt=full_prompt,
                 n=1,
                 size="512x512"
             )
