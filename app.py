@@ -42,13 +42,22 @@ def index():
             interpretation = chat_response.choices[0].message.content.strip()
 
             # 2) DALL·E Image Generation using the new images endpoint:
-            image_prompt = (
-                f"Create a dream-like, surreal image that visually represents the inner journey of the dreamer. "
-                f"Incorporate symbolic elements such as dark, mysterious silhouettes (the Shadow), ethereal figures (Anima/Animus), "
-                f"and transformative motifs like labyrinths or mythic creatures to evoke the collective unconscious and the process of individuation. "
-                f"Blend elements of the dream:\n\n\"{dream_text}\"\n\nwith the following interpretation:\n\n\"{interpretation}\"."
+            base_image_prompt = (
+                "Create a surreal, dream-like image that represents the literal elements of the dream. "
+                "Focus primarily on the scene described rather than excessive symbolic details. "
+                "For example, if the dream involves a person drowning and then waking up in bed, emphasize those elements clearly."
             )
+            middle_text = "\n\nDream: "
+            combined_text = dream_text.strip()  # Using just the user's dream for the image prompt
+            full_prompt = base_image_prompt + middle_text + combined_text
 
+            # Check prompt length (must be <= 1000 characters)
+            if len(full_prompt) > 1000:
+                # Truncate the combined text so that full_prompt fits within 1000 characters
+                allowed_chars = 1000 - len(base_image_prompt) - len(middle_text)
+                truncated_combined_text = combined_text[:allowed_chars - 3] + "..."
+                full_prompt = base_image_prompt + middle_text + truncated_combined_text
+                
             image_response = openai.images.generate(
                 prompt=image_prompt,
                 n=1,
