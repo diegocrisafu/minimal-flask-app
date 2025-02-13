@@ -2,148 +2,117 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Jungian Dream Interpreter</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
   <style>
     /* RESET */
-    *, *::before, *::after {
+    * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
     body {
-      font-family: "Roboto", sans-serif;
-      line-height: 1.6;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
       color: #333;
-      background: #f5f5f5;
-      padding: 1rem;
+      background: #f0f0f0;
     }
 
     header {
       background: linear-gradient(135deg, #4F46E5, #9333EA);
       color: #fff;
-      padding: 2rem 1rem;
+      padding: 2rem;
       text-align: center;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-      margin-bottom: 2rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 1rem;
     }
-
     header h1 {
-      font-size: 2.5rem;
+      font-size: 2rem;
       margin-bottom: 0.5rem;
     }
-
     header p {
-      font-size: 1.125rem;
-      opacity: 0.9;
+      font-size: 1rem;
+      opacity: 0.85;
     }
 
     .container {
-      width: 95%;
-      max-width: 800px;
-      margin: 0 auto 2rem;
-      padding: 2rem;
+      width: 90%;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 1rem;
       background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       margin-bottom: 2rem;
     }
 
+    /* Form styling */
+    form {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1.5rem;
+    }
+
     label {
-      font-weight: 500;
-      font-size: 1.1rem;
-      margin-bottom: 0.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
     }
 
     textarea {
-      padding: 1rem;
+      font: inherit;
+      padding: 0.75rem;
       border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1rem;
+      border-radius: 4px;
+      min-height: 120px;
       resize: vertical;
-      min-height: 150px;
-      transition: border-color 0.3s;
-    }
-
-    textarea:focus {
-      outline: none;
-      border-color: #4F46E5;
+      margin-bottom: 1rem;
     }
 
     button[type="submit"] {
       align-self: flex-start;
-      background: #4F46E5;
+      background: #4F46E5; /* Or #9333EA */
       color: #fff;
       border: none;
-      border-radius: 6px;
+      border-radius: 4px;
       padding: 0.75rem 1.5rem;
       font-size: 1rem;
-      font-weight: 500;
       cursor: pointer;
       transition: background 0.3s ease;
     }
-
     button[type="submit"]:hover {
       background: #4338CA;
     }
 
     .results {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
+      margin-top: 2rem;
     }
 
     .interpretation, .dream-image {
-      background: #fafafa;
-      border: 1px solid #eee;
-      border-radius: 8px;
-      padding: 1.5rem;
+      background: #FAFAFA;
+      border: 1px solid #EEE;
+      border-radius: 6px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
     }
 
     .interpretation h2,
     .dream-image h2 {
-      font-size: 1.5rem;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.5rem;
+      font-size: 1.25rem;
       color: #4F46E5;
-    }
-
-    .interpretation p {
-      font-size: 1rem;
-      line-height: 1.5;
     }
 
     .dream-image img {
       max-width: 100%;
-      border-radius: 6px;
+      border-radius: 4px;
       display: block;
-      margin: 0 auto;
+      margin-top: 1rem;
     }
 
     footer {
       text-align: center;
-      padding: 1rem;
+      padding: 1rem 0;
       font-size: 0.9rem;
       color: #777;
-      background: #fff;
-      border-top: 1px solid #ddd;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 2rem;
-      }
-      header p {
-        font-size: 1rem;
-      }
     }
   </style>
 </head>
@@ -180,7 +149,7 @@
   </div>
 
   <footer>
-    <p>&copy; {{ 2025 }} Diego's Jungian Dream Interpreter. Remember: this is not medical or mental health advice.</p>
+    <p>&copy; {{ 2025 }} Diego'sJungian Dream Interpreter. Remember: this is not medical or mental health advice.</p>
   </footer>
 
 </body>
