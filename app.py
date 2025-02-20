@@ -42,10 +42,10 @@ def index():
 
             # 2) DALL·E Image Generation using the image prompt you like:
             image_prompt = (
-                f"A surreal and mystical scene inspired by the following dream:\n\n"
+                f"A realistic painting, in the style of Michelangelo of a scene inspired by the dream:\n\n"
                 f"Dream: \"{dream_text}\"\n\n"
                 f"Interpretation: \"{interpretation}\"\n\n"
-                "Focus on Jungian archetypes, symbolism, and a contemplative mood."
+                "Focus on Jungian archetypes, symbolism, and mood."
             )
 
             # Ensure the image prompt is within the 1000-character limit:
@@ -55,7 +55,7 @@ def index():
             image_response = openai.images.generate(
                 prompt=image_prompt,
                 n=1,
-                size="512x512"
+                size="1024x1024"
             )
             image_url = image_response.data[0].url
 
