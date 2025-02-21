@@ -45,7 +45,7 @@ def index():
                 f"A realistic depiction of a scene inspired by the dream:\n\n"
                 f"Dream: \"{dream_text}\"\n\n"
                 f"Interpretation: \"{interpretation}\"\n\n"
-                "Focus on Jungian archetypes, style of rené magritte."
+                "Focus on Jungian archetypes, make it creepy but bright colors."
             )
 
             # Ensure the image prompt is within the 1000-character limit:
