@@ -42,7 +42,7 @@ def index():
 
             # 2) DALL·E Image Generation using the image prompt you like:
             image_prompt = (
-                f"A surreal and mystical but clear scene inspired by the following dream:\n\n"
+                f"A realistic painting and mystical scene inspired by the following dream:\n\n"
                 f"Dream: \"{dream_text}\"\n\n"
                 f"Interpretation: \"{interpretation}\"\n\n"
                 "Focus on Jungian archetypes and a contemplative mood."
