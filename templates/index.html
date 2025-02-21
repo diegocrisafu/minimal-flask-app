@@ -38,7 +38,7 @@
     }
 
     header {
-      background: linear-gradient(135deg, #4F46E5, #9333EA);
+      background: linear-gradient(135deg, #b4e083, #ee6d10);
       color: #fff;
       padding: 2rem 1rem;
       text-align: center;
@@ -173,7 +173,7 @@
   <div class="container">
     <form method="POST">
       <label for="dream_text">Describe your dream in detail:</label>
-      <textarea id="dream_text" name="dream_text" placeholder="e.g., I was climbing a spiral staircase that led to a dragon..." required></textarea>
+      <textarea id="dream_text" name="dream_text" placeholder="think..." required></textarea>
       <button type="submit">Interpret My Dream</button>
     </form>
 
@@ -187,7 +187,7 @@
         {% endif %}
         {% if image_url %}
           <div class="dream-image">
-            <h2>Dream Visualized</h2>
+            <h2>A view Into Your Dream </h2>
             <img src="{{ image_url }}" alt="Dream Image">
           </div>
         {% endif %}
