@@ -42,10 +42,10 @@ def index():
 
             # 2) DALL·E Image Generation using the image prompt you like:
             image_prompt = (
-                f"A realistic painting, in the style of Michelangelo of a scene inspired by the dream:\n\n"
+                f"A realistic oil painting, style of Madeleine Bialke, of a scene inspired by the dream:\n\n"
                 f"Dream: \"{dream_text}\"\n\n"
                 f"Interpretation: \"{interpretation}\"\n\n"
-                "Focus on Jungian archetypes, symbolism, and mood."
+                "Focus on Jungian archetypes, symbolism, tone, and mood."
             )
 
             # Ensure the image prompt is within the 1000-character limit:
