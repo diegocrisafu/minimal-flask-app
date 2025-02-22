@@ -187,7 +187,7 @@
         {% endif %}
         {% if image_url %}
           <div class="dream-image">
-            <h2>A view Into Your Dream</h2>
+            <h2>A view Into Your Dream </h2>
             <img src="{{ image_url }}" alt="Dream Image">
           </div>
         {% endif %}
@@ -198,13 +198,6 @@
   <footer>
     <p>&copy; {{ 2025 }} Diego's Dream Interpreter. This will Turn your Dream into Art :).</p>
   </footer>
-
-  <audio id="funkySound" src="https://www.soundjay.com/button/sounds/button-09.mp3" preload="auto"></audio>
-  <script>
-    document.querySelector("button[type='submit']").addEventListener("click", function() {
-      document.getElementById("funkySound").play();
-    });
-  </script>
 
 </body>
 </html>
