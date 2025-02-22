@@ -42,10 +42,12 @@ def index():
 
             # 2) DALL·E Image Generation using the image prompt you like:
             image_prompt = (
-                f"A highly detailed, realistic painting inspired by the following dream:\n\n"
+                f"A highly detailed, realistic painting based on the user's dream:\n\n"
                 f"Dream: \"{dream_text}\"\n\n"
-                f"Interpretation: \"{interpretation}\"\n\n"
-                "Render the scene with clear, vivid details and a balanced composition reminiscent of classical realism. Emphasize accurate visualization of the dream's literal elements with subtle hints of Jungian archetypal symbolism."
+                "Use the following interpretation only as minor inspiration if it aligns with the dream’s literal details:\n\n"
+                f"{interpretation}\n\n"
+                "Maintain a classical realism style with clear, vivid details that depict the dream's literal setting. "
+                "Subtle Jungian motifs may be added only if they don't overshadow the scene."
             )
 
             # Ensure the image prompt is within the 1000-character limit:
