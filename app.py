@@ -42,11 +42,11 @@ def index():
 
             # 2) DALL·E Image Generation using the image prompt you like:
             image_prompt = (
-                f"A highly detailed, realistic painting in a modern style, reminiscent of contemporary fine art. "
-                f"Focus on crisp lines, sharp focus, and natural lighting. Depict the scene accurately based on the dream:\n\n"
-                f"Dream: \"{dream_text}\"\n\n"
-                "Ensure each element is clearly defined, with a balanced composition and vibrant yet realistic colors. "
-                "Aim for a high-definition final image that reflects the emotional tone without becoming abstract."
+                f"A highly detailed, realistic scene, with crisp lines and natural lighting, "
+                f"inspired by the dream:\n\nDream: \"{dream_text}\"\n\n"
+                "Focus on accurate depiction of each element, maintaining a modern fine art style, "
+                "but avoid excessive abstraction. Aim for a balanced composition, clear definition, "
+                "and high-definition final image that reflects the emotional tone."
             )
 
             # Ensure the image prompt is within the 1000-character limit:
